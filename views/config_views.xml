@@ -1,0 +1,138 @@
+<odoo>
+    <record id="view_religion_list" model="ir.ui.view">
+        <field name="name">university.religion.list</field>
+        <field name="model">university.religion</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="code" width="100px"/>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_config_religion" model="ir.actions.act_window">
+        <field name="name">Religions</field>
+        <field name="res_model">university.religion</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_disability_list" model="ir.ui.view">
+        <field name="name">university.disability.list</field>
+        <field name="model">university.disability</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="code" width="100px"/>
+                <field name="name"/>
+                <field name="remarks"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_config_disability" model="ir.actions.act_window">
+        <field name="name">Disability Nature</field>
+        <field name="res_model">university.disability</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_institute_list" model="ir.ui.view">
+        <field name="name">university.institute.list</field>
+        <field name="model">university.institute</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="code" width="100px"/>
+                <field name="name"/>
+                <field name="city"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_config_institute" model="ir.actions.act_window">
+        <field name="name">Institutes</field>
+        <field name="res_model">university.institute</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_degree_list" model="ir.ui.view">
+        <field name="name">university.degree.list</field>
+        <field name="model">university.degree</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="code" width="100px"/>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_config_degree" model="ir.actions.act_window">
+        <field name="name">Degrees</field>
+        <field name="res_model">university.degree</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_payscale_list" model="ir.ui.view">
+        <field name="name">university.payscale.list</field>
+        <field name="model">university.payscale</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="category"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_config_payscale" model="ir.actions.act_window">
+        <field name="name">Pay Scales</field>
+        <field name="res_model">university.payscale</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_appointment_list" model="ir.ui.view">
+        <field name="name">university.appointment.type.list</field>
+        <field name="model">university.appointment.type</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="code" width="100px"/>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_config_appointment" model="ir.actions.act_window">
+        <field name="name">Appointment Types</field>
+        <field name="res_model">university.appointment.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_department_form_inherit" model="ir.ui.view">
+        <field name="name">hr.department.form.inherit</field>
+        <field name="model">hr.department</field>
+        <field name="inherit_id" ref="hr.view_department_form"/>
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field name="code" placeholder="e.g. CS-DEPT"/>
+            </field>
+        </field>
+    </record>
+    <record id="action_university_department" model="ir.actions.act_window">
+        <field name="name">Departments</field>
+        <field name="res_model">hr.department</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_job_location_list" model="ir.ui.view">
+        <field name="name">university.job.location.list</field>
+        <field name="model">university.job.location</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="address"/>
+                <field name="city"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_config_job_location" model="ir.actions.act_window">
+        <field name="name">Job Locations</field>
+        <field name="res_model">university.job.location</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_university_job_position" model="ir.actions.act_window">
+        <field name="name">Job Positions</field>
+        <field name="res_model">hr.job</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

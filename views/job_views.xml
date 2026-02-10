@@ -1,0 +1,34 @@
+<odoo>
+    <record id="view_hr_job_form_university" model="ir.ui.view">
+        <field name="name">hr.job.form.university</field>
+        <field name="model">hr.job</field>
+        <field name="inherit_id" ref="hr.view_hr_job_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                </header>
+            </xpath>
+
+            <xpath expr="//field[@name='department_id']" position="after">
+                <field name="uni_location_id"/>
+            </xpath>
+
+            <xpath expr="//sheet" position="inside">
+                <notebook>
+                    <page string="Job Description">
+                        <field name="description" placeholder="Write the detailed job description here..."/>
+                    </page>
+                    <page string="Recruitment Settings">
+                        <group>
+                            <group string="Logistics">
+                                <field name="no_of_recruitment" string="Target Hires"/>
+                                <field name="user_id" string="Recruiter"/>
+                            </group>
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+</odoo>

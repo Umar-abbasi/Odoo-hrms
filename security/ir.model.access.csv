@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_uni_religion,access.uni.religion,model_university_religion,base.group_user,1,1,1,1
+access_uni_disability,access.uni.disability,model_university_disability,base.group_user,1,1,1,1
+access_uni_institute,access.uni.institute,model_university_institute,base.group_user,1,1,1,1
+access_uni_degree,access.uni.degree,model_university_degree,base.group_user,1,1,1,1
+access_uni_payscale,access.uni.payscale,model_university_payscale,base.group_user,1,1,1,1
+access_uni_appoint,access.uni.appoint,model_university_appointment_type,base.group_user,1,1,1,1
+access_uni_job_loc,access.uni.job.loc,model_university_job_location,base.group_user,1,1,1,1
+access_employee_education,access.employee.education,model_employee_education,base.group_user,1,1,1,1
+access_employee_family,access.employee.family,model_employee_family_member,base.group_user,1,1,1,1
+access_employee_medical,access.employee.medical,model_employee_medical_history,base.group_user,1,1,1,1
+access_employee_publication,access.employee.publication,model_employee_publication,base.group_user,1,1,1,1
+access_status_wizard,access.status.wizard,model_employee_status_wizard,base.group_user,1,1,1,1

@@ -1,0 +1,24 @@
+<odoo>
+    <record id="view_employee_status_wizard_form" model="ir.ui.view">
+        <field name="name">employee.status.wizard.form</field>
+        <field name="model">employee.status.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Change Status">
+                <group>
+                    <field name="new_state" widget="radio"/>
+                </group>
+                <footer>
+                    <button string="Confirm Change" type="object" name="action_confirm_status" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_employee_status_wizard" model="ir.actions.act_window">
+        <field name="name">Change Status</field>
+        <field name="res_model">employee.status.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

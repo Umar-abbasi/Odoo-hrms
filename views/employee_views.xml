@@ -1,0 +1,124 @@
+<odoo>
+    <record id="view_employee_form_university" model="ir.ui.view">
+        <field name="name">hr.employee.form.university</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            
+            <xpath expr="//header" position="inside">
+                <button name="%(action_employee_status_wizard)d" 
+                        string="Change Status" 
+                        type="action" 
+                        class="btn-primary"/>
+                <field name="state" widget="statusbar" 
+                       statusbar_visible="active,retired,resigned,terminated,compulsory_retired,removed,dismissed,archived,deceased"/>
+            </xpath>
+
+            <xpath expr="//field[@name='work_email']" position="after">
+                <field name="employee_type" widget="radio"/>
+                <field name="emp_code"/>
+                <field name="biometric_code"/>
+                <field name="cnic"/>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                
+                <page string="Education">
+                    <field name="education_ids">
+                        <list editable="bottom">
+                            <field name="institute_id"/>
+                            <field name="degree_id"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="score"/>
+                        </list>
+                    </field>
+                </page>
+
+                <page string="Personal &amp; Family">
+                    <group>
+                        <group string="Personal Details">
+                            <field name="father_name"/>
+                            <field name="religion_id"/>
+                            <field name="domicile"/>
+                            <field name="dual_nationality"/>
+                        </group>
+                    </group>
+                    <separator string="Family Members"/>
+                    <field name="family_member_ids">
+                        <list editable="bottom">
+                            <field name="name"/>
+                            <field name="relation"/>
+                            <field name="dob"/>
+                            <field name="phone"/>
+                        </list>
+                    </field>
+                </page>
+
+                <page string="Medical">
+                    <group>
+                        <group string="Disability Info">
+                            <field name="disability"/>
+                            <field name="disability_nature_id" invisible="not disability"/>
+                        </group>
+                    </group>
+                    <separator string="Medical History"/>
+                    <field name="medical_history_ids">
+                        <list editable="bottom">
+                            <field name="disease_name"/>
+                            <field name="is_surgery"/>
+                            <field name="hospital_name"/>
+                            <field name="severity"/>
+                        </list>
+                    </field>
+                </page>
+
+                <page string="Publications" invisible="employee_type != 'faculty'">
+                    <field name="publication_ids">
+                        <list editable="bottom">
+                            <field name="title"/>
+                            <field name="journal"/>
+                            <field name="date_published"/>
+                        </list>
+                    </field>
+                </page>
+
+                <page string="Pay Scale &amp; HR Settings">
+                    <group>
+                        <group string="Dates">
+                            <field name="first_contract_date"/>
+                            <field name="regularization_date"/>
+                            <field name="date_of_leaving"/>
+                        </group>
+                        <group string="Financials">
+                            <field name="scale_id"/>
+                            <field name="basic_pay_type"/>
+                            <field name="manual_gross"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            
+        </field>
+    </record>
+
+    <record id="view_employee_filter_university" model="ir.ui.view">
+        <field name="name">hr.employee.search.university</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="cnic"/>
+                <field name="emp_code"/>
+            </xpath>
+            <xpath expr="//search" position="inside">
+                <separator/>
+                <filter name="state_active" string="Active Employees" domain="[('state', '=', 'active')]"/>
+                <filter name="state_disabled" string="Disabled Employees" domain="[('disability', '=', True)]"/>
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <filter name="group_state" string="Status" context="{'group_by':'state'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

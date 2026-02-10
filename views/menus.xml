@@ -1,0 +1,104 @@
+<odoo>
+    <record id="action_employee_dashboard" model="ir.actions.act_window">
+        <field name="name">Employee Dashboard</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">kanban,list,form</field> 
+        <field name="context">{'group_by': 'state'}</field>
+    </record>
+
+    <record id="action_emp_all" model="ir.actions.act_window">
+        <field name="name">All Employees</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="action_emp_active" model="ir.actions.act_window">
+        <field name="name">Active Employees</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'active')]</field>
+    </record>
+    <record id="action_emp_terminated" model="ir.actions.act_window">
+        <field name="name">Terminated Employees</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'terminated')]</field>
+    </record>
+    <record id="action_emp_resigned" model="ir.actions.act_window">
+        <field name="name">Resigned Employees</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'resigned')]</field>
+    </record>
+    <record id="action_emp_retired" model="ir.actions.act_window">
+        <field name="name">Retired Employees</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'retired')]</field>
+    </record>
+    <record id="action_emp_compulsory_retired" model="ir.actions.act_window">
+        <field name="name">Compulsory Retired</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'compulsory_retired')]</field>
+    </record>
+    <record id="action_emp_removed" model="ir.actions.act_window">
+        <field name="name">Removed From Service</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'removed')]</field>
+    </record>
+    <record id="action_emp_dismissed" model="ir.actions.act_window">
+        <field name="name">Dismissed From Service</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'dismissed')]</field>
+    </record>
+    <record id="action_emp_archived" model="ir.actions.act_window">
+        <field name="name">Archived Employees</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'archived')]</field>
+    </record>
+    <record id="action_emp_deceased" model="ir.actions.act_window">
+        <field name="name">Deceased Employees</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'deceased')]</field>
+    </record>
+    <record id="action_report_disabled" model="ir.actions.act_window">
+        <field name="name">Report: Disabled Employees</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('disability', '=', True)]</field>
+    </record>
+
+    <menuitem id="menu_university_root" name="University HR Linked" web_icon="hr,static/description/icon.png"/>
+
+    <menuitem id="menu_uni_dashboard" name="Dashboard" parent="menu_university_root" action="action_employee_dashboard" sequence="1"/>
+
+    <menuitem id="menu_uni_employees" name="Employees" parent="menu_university_root" sequence="10"/>
+    <menuitem id="menu_uni_emp_all" name="All Employees" parent="menu_uni_employees" action="action_emp_all" sequence="1"/>
+    <menuitem id="menu_uni_emp_active" name="Active" parent="menu_uni_employees" action="action_emp_active" sequence="2"/>
+    <menuitem id="menu_uni_emp_terminated" name="Terminated" parent="menu_uni_employees" action="action_emp_terminated" sequence="3"/>
+    <menuitem id="menu_uni_emp_resigned" name="Resigned" parent="menu_uni_employees" action="action_emp_resigned" sequence="4"/>
+    <menuitem id="menu_uni_emp_retired" name="Retired" parent="menu_uni_employees" action="action_emp_retired" sequence="5"/>
+    <menuitem id="menu_uni_emp_compulsory" name="Compulsory Retired" parent="menu_uni_employees" action="action_emp_compulsory_retired" sequence="6"/>
+    <menuitem id="menu_uni_emp_removed" name="Removed from Service" parent="menu_uni_employees" action="action_emp_removed" sequence="7"/>
+    <menuitem id="menu_uni_emp_dismissed" name="Dismissal from Service" parent="menu_uni_employees" action="action_emp_dismissed" sequence="8"/>
+    <menuitem id="menu_uni_emp_archived" name="Archived" parent="menu_uni_employees" action="action_emp_archived" sequence="9"/>
+    <menuitem id="menu_uni_emp_deceased" name="Deceased" parent="menu_uni_employees" action="action_emp_deceased" sequence="10"/>
+
+    <menuitem id="menu_uni_reports" name="Reports" parent="menu_university_root" sequence="20"/>
+    <menuitem id="menu_uni_rep_disabled" name="Disabled Employees" parent="menu_uni_reports" action="action_report_disabled"/>
+
+    <menuitem id="menu_uni_config" name="Configuration" parent="menu_university_root" sequence="100"/>
+    <menuitem id="menu_conf_religion" name="Religions" parent="menu_uni_config" action="action_config_religion" sequence="1"/>
+    <menuitem id="menu_conf_disability" name="Disability Nature" parent="menu_uni_config" action="action_config_disability" sequence="2"/>
+    <menuitem id="menu_conf_institute" name="Institutes" parent="menu_uni_config" action="action_config_institute" sequence="3"/>
+    <menuitem id="menu_conf_degree" name="Degrees" parent="menu_uni_config" action="action_config_degree" sequence="4"/>
+    <menuitem id="menu_conf_payscale" name="Pay Scales" parent="menu_uni_config" action="action_config_payscale" sequence="5"/>
+    <menuitem id="menu_conf_appointment" name="Appointment Types" parent="menu_uni_config" action="action_config_appointment" sequence="6"/>
+    <menuitem id="menu_conf_department" name="Departments" parent="menu_uni_config" action="action_university_department" sequence="7"/>
+    <menuitem id="menu_conf_job_location" name="Job Locations" parent="menu_uni_config" action="action_config_job_location" sequence="8"/>
+    <menuitem id="menu_conf_job_position" name="Job Positions" parent="menu_uni_config" action="action_university_job_position" sequence="9"/>
+</odoo>
