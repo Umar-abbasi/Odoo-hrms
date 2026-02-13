@@ -4,7 +4,20 @@
         <field name="model">hr.employee</field>
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
-            
+
+            <xpath expr="//button[@name='action_create_user']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//button[@invisible='not active or not id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='version_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+
             <xpath expr="//header" position="inside">
                 <button name="%(action_employee_status_wizard)d" 
                         string="Change Status" 
@@ -14,12 +27,14 @@
                        statusbar_visible="active,retired,resigned,terminated,compulsory_retired,removed,dismissed,archived,deceased"/>
             </xpath>
 
+
             <xpath expr="//field[@name='work_email']" position="after">
                 <field name="employee_type" widget="radio"/>
                 <field name="emp_code"/>
                 <field name="biometric_code"/>
                 <field name="cnic"/>
             </xpath>
+
 
             <xpath expr="//notebook" position="inside">
                 
