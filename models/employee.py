@@ -5,10 +5,11 @@ class UniversityEmployee(models.Model):
     _inherit = 'hr.employee'
 
     # --- Basic Details ---
-    employee_type = fields.Selection([
-        ('faculty', 'Faculty'),
-        ('staff', 'Staff')
-    ], string="Employee Type", default='staff')
+    university_tag_ids = fields.Many2many(
+        'university.employee.tag', 
+        string="Employee Category",
+        help="Select categories like Faculty, Staff, Army, Office, etc."
+    )
     
     emp_code = fields.Char("Employee Code")
     biometric_code = fields.Char("Biometric Code")

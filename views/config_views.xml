@@ -135,4 +135,23 @@
         <field name="res_model">hr.job</field>
         <field name="view_mode">list,form</field>
     </record>
+
+    <record id="view_uni_tags_tree" model="ir.ui.view">
+        <field name="name">university.employee.tag.tree</field>
+        <field name="model">university.employee.tag</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="color" widget="color_picker"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_config_uni_tags" model="ir.actions.act_window">
+        <field name="name">Employee Categories</field>
+        <field name="res_model">university.employee.tag</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_conf_uni_tags" name="Employee Categories" parent="menu_uni_config" action="action_config_uni_tags" sequence="0"/>
 </odoo>

@@ -58,3 +58,15 @@ class UniversityJobLocation(models.Model):
     _sql_constraints = [
         ('unique_location_name', 'unique(name)', 'Location name must be unique!')
     ]
+
+class UniversityEmployeeTag(models.Model):
+    _name = 'university.employee.tag'
+    _description = 'University Employee Tags'
+    _order = 'name'
+
+    name = fields.Char(required=True)
+    color = fields.Integer(string='Color Index')  # This makes the tags colorful!
+    
+    _sql_constraints = [
+        ('name_uniq', 'unique (name)', "Tag name already exists!"),
+    ]

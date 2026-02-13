@@ -5,14 +5,29 @@
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
 
+            <xpath expr="//h5[.//field[@name='work_email']]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//h5[.//field[@name='work_phone']]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//h5[.//field[@name='mobile_phone']]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//h5[.//field[@name='category_ids']]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+
             <xpath expr="//button[@name='action_create_user']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-
             <xpath expr="//button[@invisible='not active or not id']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-
             <xpath expr="//field[@name='version_id']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
@@ -28,11 +43,27 @@
             </xpath>
 
 
-            <xpath expr="//field[@name='work_email']" position="after">
-                <field name="employee_type" widget="radio"/>
-                <field name="emp_code"/>
-                <field name="biometric_code"/>
-                <field name="cnic"/>
+            <xpath expr="//div[hasclass('oe_title')]/h1" position="after">
+                
+                <div class="d-flex mt-2 mb-2">
+                    <field name="university_tag_ids" 
+                           widget="many2many_tags" 
+                           options="{'color_field': 'color'}" 
+                           placeholder="Select Categories (Faculty, Staff, etc)..."
+                           nolabel="1"/>
+                </div>
+
+                <div class="d-flex align-items-center mb-1">
+                    <span class="fw-bold me-2" style="min-width: 120px;">Code:</span>
+                    <field name="emp_code" placeholder="e.g. EMP-001" nolabel="1"/>
+                </div>
+
+                <div class="d-flex align-items-center mb-1">
+                    <span class="fw-bold me-2" style="min-width: 120px;">Biometric Code:</span>
+                    <field name="biometric_code" placeholder="e.g. 1054" nolabel="1"/>
+                </div>
+
+
             </xpath>
 
 
@@ -88,7 +119,7 @@
                     </field>
                 </page>
 
-                <page string="Publications" invisible="employee_type != 'faculty'">
+                <page string="Publications">
                     <field name="publication_ids">
                         <list editable="bottom">
                             <field name="title"/>
@@ -125,6 +156,7 @@
             <xpath expr="//field[@name='name']" position="after">
                 <field name="cnic"/>
                 <field name="emp_code"/>
+                <field name="university_tag_ids"/>
             </xpath>
             <xpath expr="//search" position="inside">
                 <separator/>
