@@ -53,3 +53,19 @@ class EmployeePublication(models.Model):
     journal = fields.Char("Journal/Conference")
     date_published = fields.Date("Date Published")
     link = fields.Char("URL")
+
+class EmployeeStatusHistory(models.Model):
+    _name = 'employee.status.history'
+    _description = 'Employee Status History'
+    _order = 'date desc' # Show newest first
+
+    employee_id = fields.Many2one('hr.employee', string="Employee", ondelete='cascade')
+    
+    date = fields.Datetime(string="Date Changed", default=fields.Datetime.now, readonly=True)
+    user_id = fields.Many2one('res.users', string="Changed By", default=lambda self: self.env.user, readonly=True)
+    
+    old_state = fields.Char(string="Old Status", readonly=True)
+    new_state = fields.Char(string="New Status", readonly=True)
+    
+    office_order = fields.Binary(string="Office Order (PDF/Img)", readonly=True)
+    file_name = fields.Char("File Name", readonly=True)

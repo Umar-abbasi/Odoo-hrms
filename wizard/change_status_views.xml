@@ -6,9 +6,11 @@
             <form string="Change Status">
                 <group>
                     <field name="new_state" widget="radio"/>
+                    <field name="office_order" filename="file_name"/>
+                    <field name="file_name" invisible="1"/>
                 </group>
                 <footer>
-                    <button string="Confirm Change" type="object" name="action_confirm_status" class="btn-primary"/>
+                    <button string="Confirm &amp; Save" type="object" name="action_confirm_status" class="btn-primary"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>

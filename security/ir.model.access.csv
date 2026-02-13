@@ -12,3 +12,4 @@ access_employee_medical,access.employee.medical,model_employee_medical_history,b
 access_employee_publication,access.employee.publication,model_employee_publication,base.group_user,1,1,1,1
 access_status_wizard,access.status.wizard,model_employee_status_wizard,base.group_user,1,1,1,1
 access_uni_tags,access.uni.tags,model_university_employee_tag,base.group_user,1,1,1,1
+access_status_history,access.status.history,model_employee_status_history,base.group_user,1,1,1,1

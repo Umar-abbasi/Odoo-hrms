@@ -67,6 +67,8 @@ class UniversityEmployee(models.Model):
     last_appraisal_date = fields.Date("Last Appraisal")
     active_appraisal = fields.Boolean("Appraisal In Progress")
 
+    status_history_ids = fields.One2many('employee.status.history', 'employee_id', string="Status History")
+    
     @api.depends('birthday')
     def _compute_age(self):
         for rec in self:
