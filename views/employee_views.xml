@@ -15,21 +15,53 @@
             <xpath expr="//field[@name='version_id']" position="attributes"><attribute name="invisible">1</attribute></xpath>
 
             <xpath expr="//header" position="inside">
-                <button name="%(action_employee_status_wizard)d" string="Change Status" type="action" class="btn-primary"/>
-                <field name="state" widget="statusbar" statusbar_visible="active,retired,resigned,terminated,compulsory_retired,removed,dismissed,archived,deceased"/>
+                <button name="action_generate_code" 
+                        string="Generate Code" 
+                        type="object" 
+                        class="btn-primary" 
+                        invisible="state != 'draft'"/>
+                
+                <button name="action_lock_profile" 
+                        string="Lock Profile" 
+                        type="object" 
+                        class="btn-primary" 
+                        invisible="state != 'code_generated'"/>
+
+                <button name="action_activate_employee" 
+                        string="Activate" 
+                        type="object" 
+                        class="btn-success" 
+                        invisible="state != 'profile_locked'"/>
+                
+                <button name="action_reset_draft" 
+                        string="Set to Draft" 
+                        type="object" 
+                        class="btn-secondary" 
+                        invisible="state not in ['code_generated', 'profile_locked']"/>
+
+                <button name="%(action_employee_status_wizard)d" 
+                        string="Change Status" 
+                        type="action" 
+                        invisible="state != 'active'"/>
+
+                <field name="state" widget="statusbar" statusbar_visible="draft,code_generated,profile_locked,active"/>
             </xpath>
 
             <xpath expr="//div[hasclass('oe_title')]/h1" position="after">
                 <div class="d-flex mt-2 mb-2">
-                    <field name="university_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" placeholder="Tags" nolabel="1"/>
+                    <field name="university_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" placeholder="Tags" nolabel="1" readonly="state in ['profile_locked', 'active']"/>
                 </div>
                 <div class="d-flex align-items-center mb-1">
                     <span class="fw-bold me-2" style="min-width: 120px;">Code:</span>
-                    <field name="emp_code" placeholder="e.g. EMP-001" nolabel="1"/>
+                    <field name="emp_code" placeholder="Auto-Generated" nolabel="1" readonly="1" force_save="1"/>
                 </div>
                 <div class="d-flex align-items-center mb-1">
                     <span class="fw-bold me-2" style="min-width: 120px;">Biometric Code:</span>
-                    <field name="biometric_code" placeholder="e.g. 1054" nolabel="1"/>
+                    <field name="biometric_code" placeholder="Enter ID (e.g. 1)" nolabel="1" readonly="state != 'draft'"/>
+                </div>
+                <div class="d-flex align-items-center mb-1">
+                    <span class="fw-bold me-2" style="min-width: 120px;">CNIC:</span>
+                    <field name="cnic" placeholder="00000-0000000-0" nolabel="1" readonly="state in ['profile_locked', 'active']"/>
                 </div>
             </xpath>
 
@@ -54,20 +86,19 @@
                 <attribute name="sequence">11</attribute>
             </xpath>
 
-
             <xpath expr="//notebook" position="inside">
                 
                 <page string="Family" sequence="4">
                     <group>
                         <group string="Personal Details">
-                            <field name="father_name"/>
-                            <field name="religion_id"/>
-                            <field name="domicile"/>
-                            <field name="dual_nationality"/>
+                            <field name="father_name" readonly="state in ['profile_locked', 'active']"/>
+                            <field name="religion_id" readonly="state in ['profile_locked', 'active']"/>
+                            <field name="domicile" readonly="state in ['profile_locked', 'active']"/>
+                            <field name="dual_nationality" readonly="state in ['profile_locked', 'active']"/>
                         </group>
                     </group>
                     <separator string="Family Members"/>
-                    <field name="family_member_ids">
+                    <field name="family_member_ids" readonly="state in ['profile_locked', 'active']">
                         <list editable="bottom">
                             <field name="name"/>
                             <field name="relation"/>
@@ -78,7 +109,7 @@
                 </page>
 
                 <page string="Education" sequence="5">
-                    <field name="education_ids">
+                    <field name="education_ids" readonly="state in ['profile_locked', 'active']">
                         <list editable="bottom">
                             <field name="institute_id"/>
                             <field name="degree_id"/>
@@ -90,7 +121,7 @@
                 </page>
 
                 <page string="Publications" sequence="6">
-                    <field name="publication_ids">
+                    <field name="publication_ids" readonly="state in ['profile_locked', 'active']">
                         <list editable="bottom">
                             <field name="title"/>
                             <field name="journal"/>
@@ -102,12 +133,12 @@
                 <page string="Medical" sequence="7">
                     <group>
                         <group string="Disability Info">
-                            <field name="disability"/>
-                            <field name="disability_nature_id" invisible="not disability"/>
+                            <field name="disability" readonly="state in ['profile_locked', 'active']"/>
+                            <field name="disability_nature_id" invisible="not disability" readonly="state in ['profile_locked', 'active']"/>
                         </group>
                     </group>
                     <separator string="Medical History"/>
-                    <field name="medical_history_ids">
+                    <field name="medical_history_ids" readonly="state in ['profile_locked', 'active']">
                         <list editable="bottom">
                             <field name="disease_name"/>
                             <field name="is_surgery"/>
@@ -120,14 +151,14 @@
                 <page string="Pay Scale &amp; HR Settings" sequence="9">
                     <group>
                         <group string="Dates">
-                            <field name="first_contract_date"/>
-                            <field name="regularization_date"/>
-                            <field name="date_of_leaving"/>
+                            <field name="first_contract_date" readonly="state in ['profile_locked', 'active']"/>
+                            <field name="regularization_date" readonly="state in ['profile_locked', 'active']"/>
+                            <field name="date_of_leaving" readonly="state in ['profile_locked', 'active']"/>
                         </group>
                         <group string="Financials">
-                            <field name="scale_id"/>
-                            <field name="basic_pay_type"/>
-                            <field name="manual_gross"/>
+                            <field name="scale_id" readonly="state in ['profile_locked', 'active']"/>
+                            <field name="basic_pay_type" readonly="state in ['profile_locked', 'active']"/>
+                            <field name="manual_gross" readonly="state in ['profile_locked', 'active']"/>
                         </group>
                     </group>
                 </page>
@@ -140,6 +171,7 @@
                             <field name="new_state" widget="badge"/>
                             <field name="user_id" widget="many2one_avatar_user"/>
                             <field name="office_order" widget="binary" filename="file_name"/>
+                            <field name="file_name" invisible="1"/>
                         </list>
                     </field>
                 </page>
