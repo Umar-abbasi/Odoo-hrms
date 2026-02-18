@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
 from datetime import date
 
@@ -6,15 +6,11 @@ class UniversityEmployee(models.Model):
     _inherit = 'hr.employee'
 
     # --- Basic Details ---
-    university_tag_ids = fields.Many2many(
-        'university.employee.tag', 
-        string="Employee Category",
-        help="Select categories like Faculty, Staff, Army, Office, etc."
-    )
+    university_tag_ids = fields.Many2many('university.employee.tag', string="Employee Category")
     
-    # --- IDENTIFIERS (Removed required=True to allow Draft state) ---
-    emp_code = fields.Char("Employee Code", copy=False)
-    biometric_code = fields.Char("Biometric Code", copy=False)
+    # --- IDENTIFIERS ---
+    emp_code = fields.Char("Employee Code", copy=False, readonly=True)
+    biometric_code = fields.Char("Biometric Code", copy=False, readonly=True)
 
     cnic = fields.Char("CNIC")
     father_name = fields.Char(string="Father's Name")
@@ -25,10 +21,9 @@ class UniversityEmployee(models.Model):
     
     # --- UPDATED STATE WORKFLOW ---
     state = fields.Selection([
-        ('draft', 'Draft'),                 # 1. Fill Info
-        ('code_generated', 'ID Generated'), # 2. Codes Confirmed
-        ('profile_locked', 'Locked'),       # 3. Read-Only Check
-        ('active', 'Active'),               # 4. Live
+        ('draft', 'Draft'),                 
+        ('profile_locked', 'Locked'),       
+        ('active', 'Active'),               
         ('resigned', 'Resigned'),
         ('retired', 'Retired'),
         ('compulsory_retired', 'Compulsory Retired'),
@@ -74,68 +69,57 @@ class UniversityEmployee(models.Model):
     active_appraisal = fields.Boolean("Appraisal In Progress")
 
     # =========================================================
+    # STRICT SECURITY: PREVENT EDITING WHEN LOCKED/ACTIVE
+    # =========================================================
+    def write(self, vals):
+        """
+        Stop ANY edit if the profile is Locked or Active.
+        Exception: Allow changing the 'state' (to unlock/activate) and tracking messages.
+        """
+        # If we are only changing the state (e.g., Locking or Unlocking), allow it.
+        if len(vals) == 1 and ('state' in vals or 'message_follower_ids' in vals):
+            return super(UniversityEmployee, self).write(vals)
+
+        # For any other change (Name, DOB, Family, etc.), CHECK STATE
+        for rec in self:
+            if rec.state in ['profile_locked', 'active']:
+                raise UserError(_("This profile is LOCKED. You cannot change any information (Personal, Family, HR, etc.) while it is Locked or Active.\n\nPlease click 'Unlock Profile' first."))
+        
+        return super(UniversityEmployee, self).write(vals)
+
+    # =========================================================
+    # BUTTON ACTION: GENERATE CODE
+    # =========================================================
+    def action_generate_code(self):
+        for rec in self:
+            if rec.emp_code or rec.biometric_code:
+                raise UserError("Codes are already generated!")
+            
+            # 1. Generate Biometric Code from Sequence
+            seq = self.env['ir.sequence'].next_by_code('hr.employee.biometric') or '0'
+            rec.biometric_code = seq
+            
+            # 2. Auto-Generate Employee Code (Pad with Zeros)
+            rec.emp_code = rec.biometric_code.zfill(4)
+
+    # =========================================================
     # WORKFLOW BUTTON ACTIONS
     # =========================================================
 
-    def action_generate_code(self):
-        """ 
-        Step 1 -> 2: Validate Biometric Code and Generate Employee Code.
-        """
-        for rec in self:
-            if not rec.biometric_code:
-                raise UserError("Please enter a Biometric Code first (Manually or from Device).")
-            
-            # Ensure it is numeric
-            if not rec.biometric_code.isdigit():
-                raise UserError("Biometric Code must contain only numbers.")
-
-            # Auto-Generate Employee Code (Pad with Zeros)
-            rec.emp_code = rec.biometric_code.zfill(4)
-            
-            # Move to Next Stage
-            rec.state = 'code_generated'
-
     def action_lock_profile(self):
-        """ 
-        Step 2 -> 3: Lock the profile so no changes can be made.
-        """
+        """ Draft -> Locked """
         for rec in self:
-            if not rec.emp_code or not rec.biometric_code:
-                raise UserError("Cannot lock profile without Employee Codes.")
-            rec.state = 'profile_locked'
+            if not rec.emp_code:
+                raise UserError("Please click 'Generate Code' before locking the profile.")
+        self.write({'state': 'profile_locked'})
 
     def action_activate_employee(self):
-        """ 
-        Step 3 -> 4: Make the employee Active.
-        """
+        """ Locked -> Active """
         self.write({'state': 'active'})
 
-    def action_reset_draft(self):
-        """ 
-        Correction Button: Go back to Draft to fix mistakes.
-        """
+    def action_unlock_profile(self):
+        """ Moves back to 'draft' so fields become editable. """
         self.write({'state': 'draft'})
-
-    # =========================================================
-    # CONSTRAINTS & LOGIC
-    # =========================================================
-
-    _sql_constraints = [
-        ('unique_biometric_code', 'unique(biometric_code)', 'Biometric Code must be unique!'),
-        ('unique_emp_code', 'unique(emp_code)', 'Employee Code must be unique!')
-    ]
-
-    @api.constrains('biometric_code')
-    def _check_biometric_numeric(self):
-        for rec in self:
-            if rec.biometric_code and not rec.biometric_code.isdigit():
-                raise ValidationError("Biometric Code must contain only numbers!")
-
-    @api.onchange('biometric_code')
-    def _onchange_biometric_code(self):
-        """ Real-time update for manual entry """
-        if self.biometric_code and self.biometric_code.isdigit():
-            self.emp_code = self.biometric_code.zfill(4)
 
     @api.depends('birthday')
     def _compute_age(self):

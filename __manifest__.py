@@ -7,6 +7,7 @@
     'depends': ['base', 'hr', 'mail'],
     'data': [
         'security/ir.model.access.csv',
+        'data/ir_sequence.xml',
         'wizard/change_status_views.xml',
         'views/employee_views.xml',
         'views/job_views.xml',
